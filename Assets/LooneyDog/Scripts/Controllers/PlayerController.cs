@@ -24,7 +24,8 @@ public class PlayerController : MonoBehaviour
         private Vector2 _smoothMovement;
         [SerializeField] private float _sprint=2f;
         [SerializeField] private float _cameraVerticalRoatation;
-
+        [SerializeField] private Transform _playerGrabLocation,_grabbedObject;
+        [SerializeField] private ObjectDetectController _objectDetectController;
 
 /* Unmerged change from project 'Assembly-CSharp.Player'
 Before:
@@ -111,7 +112,8 @@ After:
         {
             if (context.performed) // When the input is active
             {
-                PerformAction();
+                //PerformAction();
+                PerformGrab();
             }
             else if (context.canceled) // When the input is released
             {
@@ -165,6 +167,78 @@ After:
             Ani1.SetLayerWeight(1, 0);
             Ani1.SetLayerWeight(2, 0);
         }
-       
+
+        public void PerformGrab() {
+            
+            Ani1.SetTrigger("Grab");
+            if (_grabbedObject != null)
+            {
+                Ani1.SetBool("Grabbed", false);
+                //DropObject();
+            }
+            else
+            {
+                if (_objectDetectController.ActiveObject != null)
+                {
+                    Ani1.SetBool("Grabbed", true);
+                    _grabbedObject = _objectDetectController.ActiveObject.transform;
+
+                    /* if (_grabbedObject == null)
+                     {
+                         PickObject();
+                     }*/
+                }
+            }
+            /*else
+            {
+                if (_objectDetectController.ActiveObject != null)
+                {
+                    Ani1.SetBool("Grabbed", true);
+                    if (_grabbedObject == null)
+                    {
+                        PickObject();
+                    }
+                }
+            }*/
+
+
+        }
+
+        public void GrabObject() {
+            /*if (_grabbedObject == null )
+            {*/
+                PickObject();
+            //}
+        }
+
+
+        public void PickObject() {
+            /*if (_objectDetectController.ActiveObject != null)
+            {
+                _objectDetectController.ActiveObject.transform.parent = _playerGrabLocation;
+                _objectDetectController.ActiveObject.GetComponent<Rigidbody>().isKinematic = true;
+                _objectDetectController.ActiveObject.transform.localPosition = Vector3.zero;
+                _objectDetectController.ActiveObject.transform.localRotation = Quaternion.identity;
+                _grabbedObject = _objectDetectController.ActiveObject.transform;
+            }*/
+
+            if (_grabbedObject != null)
+            {
+                _grabbedObject.transform.parent = _playerGrabLocation;
+                _grabbedObject.GetComponent<Rigidbody>().isKinematic = true;
+                _grabbedObject.transform.localPosition = Vector3.zero;
+                _grabbedObject.transform.localRotation = Quaternion.identity;
+                
+            }
+        }
+
+        public void DropObject() {
+            if (_grabbedObject != null)
+            {
+                _grabbedObject.GetComponent<Rigidbody>().isKinematic = false;
+                _grabbedObject.transform.parent = null;
+                _grabbedObject = null;
+            }
+        }
     }
 }

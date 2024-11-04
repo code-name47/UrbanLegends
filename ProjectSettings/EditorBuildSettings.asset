@@ -11,7 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/LooneyDog/scene/Home.unity
     guid: 420d01008a5e2c04eb2873bb1b0ff3b4
-  - enabled: 1
+  - enabled: 0
     path: Assets/LooneyDog/scene/Game.unity
     guid: 97339434539581147b18cbac719abf13
+  - enabled: 1
+    path: Assets/LooneyDog/scene/PathScene.unity
+    guid: 2520759340a467944bcc843872d7b45e
   m_configObjects: {}
